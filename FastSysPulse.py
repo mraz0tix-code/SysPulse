@@ -18,7 +18,7 @@ def Calculator():
         a = float(input("a = ?: "))
         b = float(input("b = ?: "))
     except ValueError:
-        print("\n[ERROR] Вводи строго числа, а не буквы!")
+        print("\n[ERROR] Enter strictly numbers, not letters!")
         input("\nPress Enter to continue...")
         return
 
