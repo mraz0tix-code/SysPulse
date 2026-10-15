@@ -256,7 +256,7 @@ def Main_Menu():
             Run_Toolbox()
         elif main_choice == "2":
             print("\nOpening mraz0tix's awesome website...")
-            webbrowser.open("https://github.io")
+            webbrowser.open("https://mraz0tix-code.github.io/")
             input("\nPress Enter to continue...")
         elif main_choice == "3":
             Calculator()
