@@ -61,7 +61,6 @@ def Internet():
         Internet_choice = input("Select a menu option (1-2): ")
 
         if Internet_choice == "1":
-            print("\nChecking connection...")
             subprocess.run(["ping", "-c", "3", "8.8.8.8"])
             input("\nPress Enter to continue...")
         elif Internet_choice == "2":
@@ -84,7 +83,6 @@ def Kernel():
         Kernel_choice = input("Select a menu option (1-2): ")
 
         if Kernel_choice == "1":
-            print("\nKernel Information:")
             subprocess.run(["uname", "-a"])
             input("\nPress Enter to continue...")
         elif Kernel_choice == "2":
@@ -107,7 +105,6 @@ def Network_ports():
         Network_ports_choice = input("Select a menu option (1-2): ")
 
         if Network_ports_choice == "1":
-            print("\nListening ports in the system:")
             subprocess.run(["ss", "-tuln"])
             input("\nPress Enter to continue...")
         elif Network_ports_choice == "2":
@@ -130,7 +127,6 @@ def Fastfetch():
         fastfetch_choice = input("Select a menu option (1-2): ")
 
         if fastfetch_choice == "1":
-            print("\nRunning fastfetch...")
             try:
                 subprocess.run(["fastfetch"])
             except FileNotFoundError:
@@ -156,7 +152,6 @@ def Disk_info():
         disk_choice = input("Select a menu option (1-2): ")
 
         if disk_choice == "1":
-            print("\n=== DISK STORAGE ANALYSIS ===")
             print(get_disk_progress_bar("/"))
             input("\nPress Enter to continue...")
         elif disk_choice == "2":
@@ -179,7 +174,6 @@ def htop():
         htop_choice = input("Select a menu option (1-2): ")
 
         if htop_choice == "1":
-            print("\nRunning htop...")
             subprocess.run(["htop"])
             os.system("clear || cls")
         elif htop_choice == "2":
@@ -190,11 +184,9 @@ def htop():
             input("\nPress Enter to continue...")
 
 def Reboot():
-    print("\n[WARNING] Rebooting system...")
     subprocess.run(["sudo", "reboot"])
 
 def shutdown():
-    print("\n[WARNING] Shutdown system...")
     subprocess.run(["sudo", "poweroff"])
 
 def Run_Toolbox():
@@ -256,7 +248,7 @@ def Main_Menu():
             Run_Toolbox()
         elif main_choice == "2":
             print("\nOpening mraz0tix's awesome website...")
-            webbrowser.open("https://mraz0tix-code.github.io/")
+            webbrowser.open("https://github.io")
             input("\nPress Enter to continue...")
         elif main_choice == "3":
             Calculator()
