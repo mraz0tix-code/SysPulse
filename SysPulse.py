@@ -5,6 +5,151 @@ import webbrowser
 import shutil
 import time
 
+def NetPulse_Main():
+    while True:
+        clear_screen()
+        print("=" * 40)
+        print("               NetPulse")
+        print("=" * 40)
+        print("1. Check the internet connection's menu")
+        print("2. Check the ports menu")
+        print("3. Nmap usage mode (nmap)")
+        print("4. Exit NetPulse")
+        
+        print("\n5. Open mraz0tix's site")
+
+        main_choice = input("\nSelect a menu option (1-4): > ")
+         
+        if main_choice == "1":
+            Internet_menu()
+        elif main_choice == "2":
+            Ports_menu()
+        elif main_choice == "3":
+            nmap_mode()
+        elif main_choice == "4":
+            print("\n[+] Bye Bye!")
+            break
+        
+        elif main_choice == "5":
+            Site()
+        
+        else:
+            print("\n[!] Invalid choice. Please try again.")
+            input("\nPress Enter to continue...")
+
+def Internet_menu():       
+    while True:
+        clear_screen()
+        print("=" * 40)
+        print("              Internet Menu")
+        print("=" * 40)
+        print("1. Run ping test (8.8.8.8)")
+        print("2. Ping custom website or IP")  
+        print("3. Back to main menu")
+
+        choice_internet = input("\nSelect a menu option (1-3): > ")  
+
+        if choice_internet == "1":
+            Internet_check_default()  
+        elif choice_internet == "2":
+            Internet_check_custom()   
+        elif choice_internet == "3":
+            break
+        else:
+            print("\n[!] Invalid choice. Please try again.")
+            input("\nPress Enter to continue...")
+
+def Internet_check_default():
+    print("\n[+] Okay! Already checking connection...")
+    time.sleep(0.5)
+    try:
+        subprocess.run(["kitty", "--hold", "ping", "-c", "3", "8.8.8.8"], check=True)
+        print("[+] Internet connection checked successfully!")
+    except FileNotFoundError:
+        print("\n[!] Error: 'kitty' terminal is not installed.")
+    input("\nPress Enter to continue...")
+
+def Internet_check_custom():
+    target = input("\nEnter website or IP to ping (e.g., google.com): > ")
+    if target: 
+        print(f"\n[+] Pinging {target}...")
+        time.sleep(0.5)
+        try:
+            subprocess.run(["kitty", "--hold", "ping", "-c", "4", target], check=True)
+            print("\n[+] Ping completed successfully!")
+        except FileNotFoundError:
+            print("\n[!] Error: 'kitty' terminal is not installed.")
+    else:
+        print("\n[!] Error: Empty target.")
+    input("\nPress Enter to continue...")
+
+def Ports_menu():
+    while True:
+        clear_screen()
+        print("=" * 40)
+        print("             Menu for ports")
+        print("=" * 40)
+        print("1. Check your open ports (ss)")
+        print("2. Back to main menu")
+
+        main_choice_ports = input("\nSelect a menu option (1-2): > ")
+        
+        if main_choice_ports == "1":
+            print("\n[+] Okay! Already checking ports...")
+            time.sleep(0.5)
+            try:
+                subprocess.run(["kitty", "--hold", "ss", "-tuln"], check=True)
+                print("[+] Ports checked successfully!")
+            except FileNotFoundError:
+                print("\n[!] Error: 'kitty' terminal is not installed.")
+            input("\nPress Enter to continue...")
+        elif main_choice_ports == "2":
+            break
+        else:
+            print("\n[!] Invalid choice. Please try again.")
+            input("\nPress Enter to continue...")
+
+def nmap_mode():
+    while True:
+        clear_screen()
+        print("=" * 40)
+        print("           Nmap mode-menu")
+        print("=" * 40)
+        print("1. View your subnet (Scan custom target)")
+        print("2. Back to main menu")
+
+        nmap_choice = input("\nSelect a menu option (1-2): > ")
+
+        if nmap_choice == "1":
+            subnet = input("\nEnter target subnet (Default: 192.168.1.0/24): > ")
+            if not subnet:
+                subnet = "192.168.1.0/24"
+
+            print(f"\n[+] Okay, checking subnet {subnet} via Nmap...")
+            
+            cmd = ["kitty", "--hold", "sudo", "nmap", "-sS", "-sV", "-O", subnet]
+            
+            try:
+                subprocess.run(cmd, check=True)
+            except FileNotFoundError:
+                print("\n[!] Error: 'kitty' terminal emulator or 'nmap' is not installed.")
+                input("\nPress Enter to continue...")
+            except subprocess.CalledProcessError:
+                print("\n[!] Scan was interrupted or failed (maybe wrong sudo password?).")
+                input("\nPress Enter to continue...")
+                
+        elif nmap_choice == "2":
+            break
+        else:
+            print("\n[!] Invalid choice. Please try again.")
+            input("\nPress Enter to continue...")
+
+def clear_screen():
+    os.system("clear || cls")
+
+def Site():
+    webbrowser.open("https://mraz0tix-code.github.io/")
+
 def Calculator():
     os.system("clear || cls")
     print("=" * 40)
@@ -56,18 +201,21 @@ def Internet():
         print("          Internet Main")
         print("=" * 40)
         print("1. Internet (Ping)")
-        print("0. Exit to Toolbox Menu")
+        print("2. Exit to Toolbox Menu")
         print("=" * 40)
         
-        Internet_choice = input("Select a menu option (0-1): ")
+        Internet_choice = input("Select a menu option (1-2): ")
 
         if Internet_choice == "1":
             print("\nChecking connection...")
             subprocess.run(["kitty", "--hold", "ping", "-c", "3", "8.8.8.8"])
             input("\nPress Enter to continue...")
-        elif Internet_choice == "0":
+        elif Internet_choice == "2":
             print("Okay exit the Internet main")
             break
+        else:
+            print("\nInvalid choice. Please try again.")
+            input("\nPress Enter to continue...")
 
 def Kernel():
     while True: 
@@ -76,18 +224,21 @@ def Kernel():
         print("          Uname Main")
         print("=" * 40)
         print("1. Uname (Kernel)")
-        print("0. Exit to Toolbox Menu")
+        print("2. Exit to Toolbox Menu")
         print("=" * 40)
 
-        Kernel_choice = input("Select a menu option (0-1): ")
+        Kernel_choice = input("Select a menu option (1-2): ")
 
         if Kernel_choice == "1":
             print("\nKernel Information:")
             subprocess.run(["uname", "-a"])
             input("\nPress Enter to continue...")
-        elif Kernel_choice == "0":
+        elif Kernel_choice == "2":
             print("Okay exit the Uname main")
             break
+        else:
+            print("\nInvalid choice. Please try again.")
+            input("\nPress Enter to continue...")
 
 def Network_ports():
     while True: 
@@ -96,18 +247,21 @@ def Network_ports():
         print("          Network and ports Main")
         print("=" * 40)
         print("1. Check the ports")
-        print("0. Exit to Toolbox Menu")
+        print("2. Exit to Main Menu")
         print("=" * 40)
 
-        Network_ports_choice = input("Select a menu option (0-1): ")
+        Network_ports_choice = input("Select a menu option (1-2): ")
 
         if Network_ports_choice == "1":
             print("\nListening ports in the system:")
             subprocess.run(["ss", "-tuln"])
             input("\nPress Enter to continue...")
-        elif Network_ports_choice == "0":
+        elif Network_ports_choice == "2":
             print("Okay exit the Network and ports main")
             break
+        else:
+            print("\nInvalid choice. Please try again.")
+            input("\nPress Enter to continue...")
 
 def Fastfetch():
     while True: 
@@ -116,20 +270,23 @@ def Fastfetch():
         print("          fastfetch Main")
         print("=" * 40)
         print("1. Run fastfetch")
-        print("0. Exit to Toolbox Menu")
+        print("2. Exit to Main Menu")
         print("=" * 40)
 
-        fastfetch_choice = input("Select a menu option (0-1): ")
+        fastfetch_choice = input("Select a menu option (1-2): ")
 
         if fastfetch_choice == "1":
             try:
                 subprocess.run(["kitty", "--hold", "fastfetch"])
             except FileNotFoundError:
-                print("\nError: 'fastfetch' is not installed.")
+                print("\nError: 'fastfetch' is not installed on your system.")
             input("\nPress Enter to continue...")
-        elif fastfetch_choice == "0":
+        elif fastfetch_choice == "2":
             print("Okay exit the fastfetch main")
             break
+        else:
+            print("\nInvalid choice. Please try again.")
+            input("\nPress Enter to continue...")
 
 def Disk_info():
     while True: 
@@ -138,18 +295,21 @@ def Disk_info():
         print("          Disk Main")
         print("=" * 40)
         print("1. Check your disk")
-        print("0. Exit to Toolbox Menu")
+        print("2. Exit to Main Menu")
         print("=" * 40)
 
-        disk_choice = input("Select a menu option (0-1): ")
+        disk_choice = input("Select a menu option (1-2): ")
 
         if disk_choice == "1":
             print("\n=== DISK STORAGE ANALYSIS ===")
             print(get_disk_progress_bar("/"))
             input("\nPress Enter to continue...")
-        elif disk_choice == "0":
+        elif disk_choice == "2":
             print("Okay exit the disk main")
             break
+        else:
+            print("\nInvalid choice. Please try again.")
+            input("\nPress Enter to continue...")
 
 def htop():
     while True: 
@@ -158,18 +318,21 @@ def htop():
         print("          htop Main")
         print("=" * 40)
         print("1. Run htop")
-        print("0. Exit to Toolbox Menu")
+        print("2. Exit to Main Menu")
         print("=" * 40)
 
-        htop_choice = input("Select a menu option (0-1): ")
+        htop_choice = input("Select a menu option (1-2): ")
 
         if htop_choice == "1":
             print("\nRunning htop...")
             subprocess.run(["kitty", "--hold", "htop"])
             input("\nPress Enter to continue...")
-        elif htop_choice == "0":
+        elif htop_choice == "2":
             print("Okay exit the htop main")
             break
+        else:
+            print("\nInvalid choice. Please try again.")
+            input("\nPress Enter to continue...")
 
 def Reboot():
     print("\n[WARNING] Rebooting system")
@@ -232,18 +395,21 @@ def Main_Menu():
         print("1. Toolbox (by mraz0tix)")
         print("2. Open my site (mraz0tix-code.github.io)")
         print("3. Run Calculator")
+        print("4. Run NetPulse")
         print("0. Exit the program")
         print("=" * 40)
-        main_choice = input("Select a menu option (0-3): ")
+        main_choice = input("Select a menu option (0-4): ")
 
         if main_choice == "1":
             Run_Toolbox()
         elif main_choice == "2":
             print("\nOpening mraz0tix's awesome website...")
-            webbrowser.open("https://mraz0tix-code.github.io/")
+            Site()
             input("\nPress Enter to continue...")
         elif main_choice == "3":
             Calculator()
+        elif main_choice == "4":
+            NetPulse_Main()
         elif main_choice == "0":
             print("\nOkay! Goodbye!")
             os.system("clear || cls")
