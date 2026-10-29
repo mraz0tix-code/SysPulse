@@ -27,15 +27,15 @@ def NetPulse_Main():
         elif main_choice == "3":
             nmap_mode()
         elif main_choice == "4":
-            print("\n[+] Bye Bye!")
+            print("\nFastSysPulse >> [+] Bye Bye!")
             break
         
         elif main_choice == "5":
             Site()
         
         else:
-            print("\n[!] Invalid choice. Please try again.")
-            input("\nPress Enter to continue...")
+            print("\nFastSysPulse >> [!] Invalid choice. Please try again.")
+            input("\nFastSysPulse >> Press Enter to continue...")
 
 def Internet_menu():       
     while True:
@@ -56,30 +56,30 @@ def Internet_menu():
         elif choice_internet == "3":
             break
         else:
-            print("\n[!] Invalid choice. Please try again.")
-            input("\nPress Enter to continue...")
+            print("\nFastSysPulse >> [!] Invalid choice. Please try again.")
+            input("\nFastSysPulse >> Press Enter to continue...")
 
 def Internet_check_default():
-    print("\n[+] Okay! Already checking connection...")
+    print("\nFastSysPulse >> [+] Okay! Already checking connection...")
     try:
         subprocess.run(["ping", "-c", "3", "8.8.8.8"], check=True)
-        print("[+] Internet connection checked successfully!")
+        print("FastSysPulse >> [+] Internet connection checked successfully!")
     except FileNotFoundError:
-        print("\n[!] Error: 'kitty' terminal is not installed.")
-    input("\nPress Enter to continue...")
+        print("\nFastSysPulse >> [!] Error: 'kitty' terminal is not installed.")
+    input("\nFastSysPulse >> Press Enter to continue...")
 
 def Internet_check_custom():
-    target = input("\nEnter website or IP to ping (e.g., google.com): > ")
+    target = input("\nFastSysPulse >> Enter website or IP to ping (e.g., google.com): > ")
     if target: 
-        print(f"\n[+] Pinging {target}...")
+        print(f"\nFastSysPulse >> [+] Pinging {target}...")
         try:
             subprocess.run(["ping", "-c", "4", target], check=True)
-            print("\n[+] Ping completed successfully!")
+            print("\nFastSysPulse >> [+] Ping completed successfully!")
         except FileNotFoundError:
-            print("\n[!] Error: 'kitty' terminal is not installed.")
+            print("\nFastSysPulse >> [!] Error: 'kitty' terminal is not installed.")
     else:
-        print("\n[!] Error: Empty target.")
-    input("\nPress Enter to continue...")
+        print("\nFastSysPulse >> [!] Error: Empty target.")
+    input("\nFastSysPulse >> Press Enter to continue...")
 
 def Ports_menu():
     while True:
@@ -93,19 +93,19 @@ def Ports_menu():
         main_choice_ports = input("\nSelect a menu option (1-2): > ")
         
         if main_choice_ports == "1":
-            print("\n[+] Okay! Already checking ports...")
+            print("\nFastSysPulse >> [+] Okay! Already checking ports...")
             time.sleep(0.5)
             try:
                 subprocess.run(["ss", "-tuln"], check=True)
-                print("[+] Ports checked successfully!")
+                print("FastSysPulse >> [+] Ports checked successfully!")
             except FileNotFoundError:
-                print("\n[!] Error: 'kitty' terminal is not installed.")
-            input("\nPress Enter to continue...")
+                print("\nFastSysPulse >> [!] Error: 'kitty' terminal is not installed.")
+            input("\nFastSysPulse >> Press Enter to continue...")
         elif main_choice_ports == "2":
             break
         else:
-            print("\n[!] Invalid choice. Please try again.")
-            input("\nPress Enter to continue...")
+            print("\nFastSysPulse >> [!] Invalid choice. Please try again.")
+            input("\nFastSysPulse >> Press Enter to continue...")
 
 def nmap_mode():
     while True:
@@ -116,25 +116,25 @@ def nmap_mode():
         print("1. View your subnet (Scan custom target)")
         print("2. Back to main menu")
 
-        nmap_choice = input("\nSelect a menu option (1-2): > ")
+        nmap_choice = input("\nFastSysPulse >> Select a menu option (1-2): > ")
 
         if nmap_choice == "1":
-            subnet = input("\nEnter target subnet (Default: 192.168.1.0/24): > ")
+            subnet = input("\nFastSysPulse >> Enter target subnet (Default: 192.168.1.0/24): > ")
             if not subnet:
                 subnet = "192.168.1.0/24"
 
-            print(f"\n[+] Okay, checking subnet {subnet} via Nmap...")
+            print(f"\nFastSysPulse >> [+] Okay, checking subnet {subnet} via Nmap...")
             
             cmd = ["sudo", "nmap", "-sS", "-sV", "-O", subnet]
             
             try:
                 subprocess.run(cmd, check=True)
             except FileNotFoundError:
-                print("\n[!] Error: 'kitty' terminal emulator or 'nmap' is not installed.")
-                input("\nPress Enter to continue...")
+                print("\nFastSysPulse >> [!] Error: 'kitty' terminal emulator or 'nmap' is not installed.")
+                input("\nFastSysPulse >> Press Enter to continue...")
             except subprocess.CalledProcessError:
-                print("\n[!] Scan was interrupted or failed (maybe wrong sudo password?).")
-                input("\nPress Enter to continue...")
+                print("\nFastSysPulse >> [!] Scan was interrupted or failed (maybe wrong sudo password?).")
+                input("\nFastSysPulse >> Press Enter to continue...")
                 
         elif nmap_choice == "2":
             break
@@ -153,7 +153,7 @@ def Calculator():
     print("=" * 40)
     print("             Calculator_V1")
     print("=" * 40)
-    input("\nPlease click the button enter!")
+    input("\nFastSysPulse >> Please click the button enter!")
 
     clear_screen()
     print("=" * 40, "      Calculator_V1")
@@ -162,8 +162,8 @@ def Calculator():
         a = float(input("a = ?: "))
         b = float(input("b = ?: "))
     except ValueError:
-        print("\n[ERROR] Вводи строго числа, а не буквы!")
-        input("\nPress Enter to continue...")
+        print("\nFastSysPulse >> [ERROR] Вводи строго числа, а не буквы!")
+        input("\nFastSysPulse >> Press Enter to continue...")
         return
 
     print("=" * 40, "      Calculator_V1")
@@ -172,12 +172,12 @@ def Calculator():
     print(f"a * b = {a * b}")
     
     if b == 0:
-        print("0 / 0 == ERROR!") 
+        print("FastSysPulse >> 0 / 0 == ERROR!") 
     else:
         print(f"a / b = {a / b}")
 
     print("=" * 40, "       Calculator_V1")
-    input("\nPress Enter to return to Main Menu...")
+    input("\nFastSysPulse >> Press Enter to return to Main Menu...")
 
 def get_disk_progress_bar(path="/"):
     total, used, free = shutil.disk_usage(path)
@@ -205,15 +205,15 @@ def Internet():
         Internet_choice = input("Select a menu option (1-2): ")
 
         if Internet_choice == "1":
-            print("\nChecking connection...")
+            print("\nFastSysPulse >> Checking connection...")
             subprocess.run(["ping", "-c", "3", "8.8.8.8"])
-            input("\nPress Enter to continue...")
+            input("\nFastSysPulse >> Press Enter to continue...")
         elif Internet_choice == "2":
-            print("Okay exit the Internet main")
+            print("FastSysPulse >> Okay exit the Internet main")
             break
         else:
-            print("\nInvalid choice. Please try again.")
-            input("\nPress Enter to continue...")
+            print("\nFastSysPulse >> Invalid choice. Please try again.")
+            input("\nFastSysPulse >> Press Enter to continue...")
 
 def Kernel():
     while True: 
@@ -228,15 +228,15 @@ def Kernel():
         Kernel_choice = input("Select a menu option (1-2): ")
 
         if Kernel_choice == "1":
-            print("\nKernel Information:")
+            print("\nFastSysPulse >> Kernel Information:")
             subprocess.run(["uname", "-a"])
-            input("\nPress Enter to continue...")
+            input("\nFastSysPulse >> Press Enter to continue...")
         elif Kernel_choice == "2":
-            print("Okay exit the Uname main")
+            print("FastSysPulse >> Okay exit the Uname main")
             break
         else:
-            print("\nInvalid choice. Please try again.")
-            input("\nPress Enter to continue...")
+            print("\nFastSysPulse >> Invalid choice. Please try again.")
+            input("\nFastSysPulse >> Press Enter to continue...")
 
 def Network_ports():
     while True: 
@@ -251,15 +251,15 @@ def Network_ports():
         Network_ports_choice = input("Select a menu option (1-2): ")
 
         if Network_ports_choice == "1":
-            print("\nListening ports in the system:")
+            print("\nFastSysPulse >> Listening ports in the system:")
             subprocess.run(["ss", "-tuln"])
-            input("\nPress Enter to continue...")
+            input("\nFastSysPulse >> Press Enter to continue...")
         elif Network_ports_choice == "2":
-            print("Okay exit the Network and ports main")
+            print("FastSysPulse >> Okay exit the Network and ports main")
             break
         else:
-            print("\nInvalid choice. Please try again.")
-            input("\nPress Enter to continue...")
+            print("\nFastSysPulse >> Invalid choice. Please try again.")
+            input("\nFastSysPulse >> Press Enter to continue...")
 
 def Fastfetch():
     while True: 
@@ -277,14 +277,14 @@ def Fastfetch():
             try:
                 subprocess.run(["fastfetch"])
             except FileNotFoundError:
-                print("\nError: 'fastfetch' is not installed on your system.")
-            input("\nPress Enter to continue...")
+                print("\nFastSysPulse >> Error: 'fastfetch' is not installed on your system.")
+            input("\nFastSysPulse >> Press Enter to continue...")
         elif fastfetch_choice == "2":
-            print("Okay exit the fastfetch main")
+            print("FastSysPulse >> Okay exit the fastfetch main")
             break
         else:
-            print("\nInvalid choice. Please try again.")
-            input("\nPress Enter to continue...")
+            print("\nFastSysPulse >> Invalid choice. Please try again.")
+            input("\nFastSysPulse >> Press Enter to continue...")
 
 def Disk_info():
     while True: 
@@ -303,11 +303,11 @@ def Disk_info():
             print(get_disk_progress_bar("/"))
             input("\nPress Enter to continue...")
         elif disk_choice == "2":
-            print("Okay exit the disk main")
+            print("FastSysPulse >> Okay exit the disk main")
             break
         else:
-            print("\nInvalid choice. Please try again.")
-            input("\nPress Enter to continue...")
+            print("\nFastSysPulse >> Invalid choice. Please try again.")
+            input("\nFastSysPulse >> Press Enter to continue...")
 
 def htop():
     while True: 
@@ -322,22 +322,22 @@ def htop():
         htop_choice = input("Select a menu option (1-2): ")
 
         if htop_choice == "1":
-            print("\nRunning htop...")
+            print("\nFastSysPulse >> Running htop...")
             subprocess.run(["htop"])
-            input("\nPress Enter to continue...")
+            input("\nFastSysPulse >> Press Enter to continue...")
         elif htop_choice == "2":
-            print("Okay exit the htop main")
+            print("FastSysPulse >> Okay exit the htop main")
             break
         else:
-            print("\nInvalid choice. Please try again.")
-            input("\nPress Enter to continue...")
+            print("\nFastSysPulse >> Invalid choice. Please try again.")
+            input("\nFastSysPulse >> Press Enter to continue...")
 
 def Reboot():
-    print("\n[WARNING] Rebooting system")
+    print("\nFastSysPulse >> [WARNING] Rebooting system")
     subprocess.run(["sudo", "reboot"])
 
 def shutdown():
-    print("\n[WARNING] Shutdown system...")
+    print("\nFastSysPulse >> [WARNING] Shutdown system...")
     subprocess.run(["sudo", "poweroff"])
 
 def Run_Toolbox():
@@ -376,11 +376,11 @@ def Run_Toolbox():
         elif sub_choice == "8":
             shutdown()
         elif sub_choice == "0":
-            print("\nReturning to main menu...")
+            print("\nFastSysPulse >> Returning to main menu...")
             break
         else:
-            print("\nInvalid choice inside Toolbox. Please try again.")
-            input("\nPress Enter to continue...")
+            print("\nFastSysPulse >> Invalid choice inside Toolbox. Please try again.")
+            input("\nFastSysPulse >> Press Enter to continue...")
 
 def Main_Menu():
     while True:
@@ -399,20 +399,20 @@ def Main_Menu():
         if main_choice == "1":
             Run_Toolbox()
         elif main_choice == "2":
-            print("\nOpening mraz0tix's awesome website...")
+            print("\nFastSysPulse >> Opening mraz0tix's awesome website...")
             Site()
-            input("\nPress Enter to continue...")
+            input("\nFastSysPulse >> Press Enter to continue...")
         elif main_choice == "3":
             Calculator()
         elif main_choice == "4":
             NetPulse_Main()
         elif main_choice == "0":
-            print("\nOkay! Goodbye!")
+            print("\nFastSysPulse >> Okay! Goodbye!")
             os.system("clear || cls")
             break
         else:
-            print("\nInvalid choice in main menu. Please try again.")
-            input("\nPress Enter to continue...")
+            print("\nFastSysPulse >> Invalid choice in main menu. Please try again.")
+            input("\nFastSysPulse >> Press Enter to continue...")
 
 if __name__ == "__main__":
     Main_Menu()
