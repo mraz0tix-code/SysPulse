@@ -18,7 +18,7 @@ def NetPulse_Main():
         
         print("\n5. Open mraz0tix's site")
 
-        main_choice = input("\nSelect a menu option (1-4): > ")
+        main_choice = input("\nSelect a menu option (1-5): > ")
          
         if main_choice == "1":
             Internet_menu()
@@ -27,7 +27,7 @@ def NetPulse_Main():
         elif main_choice == "3":
             nmap_mode()
         elif main_choice == "4":
-            print("\nFastSysPulse >> [+] Bye Bye!")
+            print("\n[+] Bye Bye!")
             break
         
         elif main_choice == "5":
@@ -46,8 +46,9 @@ def Internet_menu():
         print("1. Run ping test (8.8.8.8)")
         print("2. Ping custom website or IP")  
         print("3. Back to main menu")
+        print("0. Connect via ssh (Security Shell)")
 
-        choice_internet = input("\nSelect a menu option (1-3): > ")  
+        choice_internet = input("\nSelect a menu option (0-3): > ")  
 
         if choice_internet == "1":
             Internet_check_default()  
@@ -55,23 +56,59 @@ def Internet_menu():
             Internet_check_custom()   
         elif choice_internet == "3":
             break
+        elif choice_internet == "0":
+            conection_via_ssh()
         else:
             print("\nFastSysPulse >> [!] Invalid choice. Please try again.")
             input("\nFastSysPulse >> Press Enter to continue...")
 
+def conection_via_ssh():
+    while True:
+        clear_screen()
+        print("=" * 40)
+        print("              SSH Conection menu")
+        print("=" * 40)
+        print("1. Connect with ip adress")
+        print("2. Back to main menu")  
+
+        choice_internet = input("\nSelect a menu option (1-2): > ")  
+   
+        if choice_internet == "1":
+            SSH_conection()   
+        elif choice_internet == "2":
+            break
+        else:
+            print("\nFastSysPulse >> [!] Invalid choice. Please try again.")
+            input("\nFastSysPulse >> Press Enter to continue...")
+
+def SSH_conection():
+    name = input("\nEnter username on system > ")
+    target = input("\nEnter IP of server > ")
+    if target:
+        time.sleep(0.5)
+        try:
+            subprocess.run(["ssh", f"{name}@{target}"], check=True)
+        except FileNotFoundError:
+            print("\nFastSysPulse >> [!] Error: 'kitty' terminal is not installed.")
+    else:
+        print("\nFastSysPulse >> [!] Error: Empty ip or username.")
+    input("\nFastSysPulse >> Press Enter to continue...")
+
 def Internet_check_default():
     print("\nFastSysPulse >> [+] Okay! Already checking connection...")
+    time.sleep(0.5)
     try:
         subprocess.run(["ping", "-c", "3", "8.8.8.8"], check=True)
-        print("FastSysPulse >> [+] Internet connection checked successfully!")
+        print("[+] Internet connection checked successfully!")
     except FileNotFoundError:
         print("\nFastSysPulse >> [!] Error: 'kitty' terminal is not installed.")
     input("\nFastSysPulse >> Press Enter to continue...")
 
 def Internet_check_custom():
-    target = input("\nFastSysPulse >> Enter website or IP to ping (e.g., google.com): > ")
+    target = input("\nEnter website or IP to ping (e.g., google.com): > ")
     if target: 
         print(f"\nFastSysPulse >> [+] Pinging {target}...")
+        time.sleep(0.5)
         try:
             subprocess.run(["ping", "-c", "4", target], check=True)
             print("\nFastSysPulse >> [+] Ping completed successfully!")
@@ -114,16 +151,16 @@ def nmap_mode():
         print("           Nmap mode-menu")
         print("=" * 40)
         print("1. View your subnet (Scan custom target)")
-        print("2. Back to main menu")
+        print("0. Back to main menu")
 
-        nmap_choice = input("\nFastSysPulse >> Select a menu option (1-2): > ")
+        nmap_choice = input("\nSelect a menu option (0-1): > ")
 
         if nmap_choice == "1":
-            subnet = input("\nFastSysPulse >> Enter target subnet (Default: 192.168.1.0/24): > ")
+            subnet = input("\nEnter target subnet (Default: 192.168.1.0/24): > ")
             if not subnet:
                 subnet = "192.168.1.0/24"
 
-            print(f"\nFastSysPulse >> [+] Okay, checking subnet {subnet} via Nmap...")
+            print(f"\n[+] Okay, checking subnet {subnet} via Nmap...")
             
             cmd = ["sudo", "nmap", "-sS", "-sV", "-O", subnet]
             
@@ -136,14 +173,11 @@ def nmap_mode():
                 print("\nFastSysPulse >> [!] Scan was interrupted or failed (maybe wrong sudo password?).")
                 input("\nFastSysPulse >> Press Enter to continue...")
                 
-        elif nmap_choice == "2":
+        elif nmap_choice == "0":
             break
         else:
-            print("\n[!] Invalid choice. Please try again.")
-            input("\nPress Enter to continue...")
-
-def clear_screen():
-    os.system("clear || cls")
+            print("\nFastSysPulse >> [!] Invalid choice. Please try again.")
+            input("\nFastSysPulse >> Press Enter to continue...")
 
 def Site():
     webbrowser.open("https://mraz0tix-code.github.io/")
