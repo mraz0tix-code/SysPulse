@@ -5,6 +5,153 @@ import webbrowser
 import shutil
 import time
 
+try:
+    from rich.console import Console
+    from rich.panel import Panel
+    from rich.progress import Progress, BarColumn, TextColumn
+    console = Console()
+    RICH = True
+except ImportError:
+    RICH = False
+
+
+def animate(text="Working", seconds=1.0):
+    if RICH:
+        with console.status(f"[bold cyan]{text}...", spinner="dots"):
+            time.sleep(seconds)
+    else:
+        print(f"{text}...")
+        time.sleep(seconds)
+
+
+def banner(title):
+    if not RICH:
+        return
+    console.print(Panel.fit(f"[bold magenta]{title}[/]\n[dim]by mraz0tix![/]", border_style="cyan"))
+    with Progress(TextColumn("[cyan]Loading"), BarColumn(bar_width=30), transient=True) as progress:
+        task = progress.add_task("", total=30)
+        for _ in range(30):
+            progress.advance(task)
+            time.sleep(0.03)
+
+
+def gui(title, actions):
+    try:
+        import queue
+        import threading
+        import tkinter as tk
+        from tkinter import scrolledtext
+    except ImportError:
+        print("\n[!] tkinter is not installed (install python-tk).")
+        input("\nPress Enter to continue...")
+        return
+
+    try:
+        root = tk.Tk()
+    except tk.TclError:
+        print("\n[!] No graphical display available.")
+        input("\nPress Enter to continue...")
+        return
+
+    root.title(f"{title} by mraz0tix")
+    root.geometry("700x480")
+    root.configure(bg="#1e1e2e")
+
+    side = tk.Frame(root, bg="#1e1e2e")
+    side.pack(side="left", fill="y", padx=8, pady=8)
+
+    out = scrolledtext.ScrolledText(
+        root, bg="#11111b", fg="#a6e3a1", insertbackground="white",
+        font=("monospace", 10), state="disabled"
+    )
+    out.pack(side="right", fill="both", expand=True, padx=8, pady=8)
+
+    results = queue.Queue()
+
+    def show(text):
+        out.configure(state="normal")
+        out.delete("1.0", "end")
+        out.insert("end", text)
+        out.configure(state="disabled")
+
+    def worker(cmd):
+        try:
+            done = subprocess.run(cmd, capture_output=True, text=True, timeout=30)
+            results.put(done.stdout + done.stderr)
+        except FileNotFoundError:
+            results.put(f"{cmd[0]} isn't installed!")
+        except subprocess.TimeoutExpired:
+            results.put("Timed out.")
+
+    def poll():
+        try:
+            while True:
+                show(results.get_nowait())
+        except queue.Empty:
+            pass
+        root.after(100, poll)
+
+    def click(action):
+        result = action() if callable(action) else action
+        if isinstance(result, list):
+            show("Running: " + " ".join(result) + " ...")
+            threading.Thread(target=worker, args=(result,), daemon=True).start()
+        elif result:
+            show(result)
+
+    show(f"{title} by mraz0tix\n\nChoose an action on the left.")
+    for label, action in actions:
+        tk.Button(side, text=label, width=22, command=lambda a=action: click(a)).pack(pady=3)
+    tk.Button(side, text="Close", width=22, command=root.destroy).pack(pady=3)
+
+    poll()
+    root.mainloop()
+
+
+def gui_site():
+    webbrowser.open("https://mraz0tix-code.github.io/")
+    return "Opening mraz0tix's site in your browser..."
+
+
+def disk_animation(path="/"):
+    total, used, free = shutil.disk_usage(path)
+    percent = (used / total) * 100
+    if RICH:
+        with Progress(TextColumn("[bold]{task.description}"), BarColumn(bar_width=30), TextColumn("{task.percentage:>5.1f}%")) as progress:
+            task = progress.add_task(f"[{path}]", total=100)
+            for step in range(int(percent) + 1):
+                progress.update(task, completed=min(step, percent))
+                time.sleep(0.02)
+            progress.update(task, completed=percent)
+        console.print(f"Free: {free / (1024 ** 3):.1f} GB of {total / (1024 ** 3):.1f} GB")
+    else:
+        print(get_disk_progress_bar(path))
+
+
+def gui_calculator():
+    from tkinter import simpledialog
+    a = simpledialog.askfloat("Calculator", "a = ?")
+    b = simpledialog.askfloat("Calculator", "b = ?")
+    if a is None or b is None:
+        return "Cancelled."
+    lines = [f"a + b = {a + b}", f"a - b = {a - b}", f"a * b = {a * b}"]
+    lines.append("a / b = ERROR! (b = 0)" if b == 0 else f"a / b = {a / b}")
+    return "\n".join(lines)
+
+
+def tool_actions():
+    return [
+        ("Ping 8.8.8.8", ["ping", "-c", "3", "8.8.8.8"]),
+        ("Kernel (uname)", ["uname", "-a"]),
+        ("Open ports (ss)", ["ss", "-tuln"]),
+        ("Disks (lsblk)", ["lsblk", "-f"]),
+        ("Disk usage", lambda: get_disk_progress_bar("/")),
+        ("Fastfetch", ["fastfetch"]),
+        ("Calculator", gui_calculator),
+        ("Open my site", gui_site),
+    ]
+
+
 def NetPulse_Main():
     while True:
         clear_screen()
@@ -85,7 +232,7 @@ def SSH_conection():
     name = input("\nEnter username on system > ")
     target = input("\nEnter IP of server > ")
     if target:
-        time.sleep(0.5)
+        animate("Working")
         try:
             subprocess.run(["kitty", "--hold", "ssh", f"{name}@{target}"], check=True)
         except FileNotFoundError:
@@ -96,7 +243,7 @@ def SSH_conection():
 
 def Internet_check_default():
     print("\nSysPulse >> [+] Okay! Already checking connection...")
-    time.sleep(0.5)
+    animate("Working")
     try:
         subprocess.run(["kitty", "--hold", "ping", "-c", "3", "8.8.8.8"], check=True)
         print("[+] Internet connection checked successfully!")
@@ -108,7 +255,7 @@ def Internet_check_custom():
     target = input("\nEnter website or IP to ping (e.g., google.com): > ")
     if target: 
         print(f"\nSysPulse >> [+] Pinging {target}...")
-        time.sleep(0.5)
+        animate("Working")
         try:
             subprocess.run(["kitty", "--hold", "ping", "-c", "4", target], check=True)
             print("\nSysPulse >> [+] Ping completed successfully!")
@@ -131,7 +278,7 @@ def Ports_menu():
         
         if main_choice_ports == "1":
             print("\nSysPulse >> [+] Okay! Already checking ports...")
-            time.sleep(0.5)
+            animate("Working")
             try:
                 subprocess.run(["kitty", "--hold", "ss", "-tuln"], check=True)
                 print("SysPulse >> [+] Ports checked successfully!")
@@ -344,7 +491,7 @@ def Disk_info():
 
         if disk_choice == "1":
             print("\n=== DISK STORAGE ANALYSIS ===")
-            print(get_disk_progress_bar("/"))
+            disk_animation("/")
             input("\nPress Enter to continue...")
         elif disk_choice == "2":
             print("SysPulse >> Okay exit the disk main")
@@ -378,12 +525,12 @@ def htop():
 
 def Reboot():
     print("\nSysPulse >> [WARNING] Rebooting system")
-    time.sleep(1)
+    animate("Please wait")
     subprocess.run(["kitty", "--hold", "sudo", "reboot"])
 
 def shutdown():
     print("\nSysPulse >> [WARNING] Shutdown system...")
-    time.sleep(1)
+    animate("Please wait")
     subprocess.run(["kitty", "--hold", "sudo", "poweroff"])
 
 def Run_Toolbox():
@@ -438,9 +585,10 @@ def Main_Menu():
         print("2. Open my site (mraz0tix-code.github.io)")
         print("3. Run Calculator")
         print("4. Run NetPulse")
+        print("5. Open GUI window")
         print("0. Exit the program")
         print("=" * 40)
-        main_choice = input("Select a menu option (0-4): ")
+        main_choice = input("Select a menu option (0-5): ")
 
         if main_choice == "1":
             Run_Toolbox()
@@ -452,6 +600,8 @@ def Main_Menu():
             Calculator()
         elif main_choice == "4":
             NetPulse_Main()
+        elif main_choice == "5":
+            gui("SysPulse", tool_actions())
         elif main_choice == "0":
             print("\nSysPulse >> Okay! Goodbye!")
             os.system("clear || cls")
@@ -461,4 +611,5 @@ def Main_Menu():
             input("\nSysPulse >> Press Enter to continue...")
 
 if __name__ == "__main__":
+    banner("SysPulse")
     Main_Menu()
