@@ -33,25 +33,25 @@ The core architecture is split into high-speed functional domain blocks:
 ## 💻 Tech Stack & Environment
 
 - **Language:** Pure Python (3.10+)
-- **Standard Library Hooks:** `subprocess` process forks, `os` bindings, `shutil` environment stats, `webbrowser` telemetry.
+- **Standard Library Hooks:** `subprocess` process forks, `os` bindings, `shutil` environment stats, `webbrowser` telemetry, `python-rich` python library (partially).
 - **Optimized Terminal Target:** Arch Linux running natively within the `Kitty` terminal emulator environment.
 
 ## 🚀 Deployment Manual
 
 1. **Pull the monolithic payload to your host machine:**
    ```bash
-   git clone https://github.commraz0tix-code/SysPulse.git
+   git clone https://github.com/mraz0tix-code/SysPulse
    cd SysPulse
    ```
 
 2. **Grant execution permissions to the system binary:**
    ```bash
-   chmod +x fastsyspulse.py
+   chmod +x FastSysPulse.py
    ```
 
 3. **Deploy the runtime environment:**
    ```bash
-   python fastsyspulse.py
+   python FastSysPulse.py
    ```
 
 ## 📋 Code Specifications
