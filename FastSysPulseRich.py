@@ -54,7 +54,7 @@ def gui(title, actions):
         return
 
     root.title(f"{title} by mraz0tix")
-    root.geometry("700x480")
+    root.geometry("1080x600")
     root.configure(bg="#1e1e2e")
 
     side = tk.Frame(root, bg="#1e1e2e")
